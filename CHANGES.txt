@@ -1,0 +1,25 @@
+------------------------------------------------------------------------
+r499 | celess22 | 2019-11-26 18:26:28 +0000 (Tue, 26 Nov 2019) | 2 lines
+Changed paths:
+   M /trunk/RaidTracker.toc
+
+
+
+------------------------------------------------------------------------
+r498 | celess22 | 2019-11-26 18:22:22 +0000 (Tue, 26 Nov 2019) | 2 lines
+Changed paths:
+   M /trunk/RaidTracker.lua
+   M /trunk/RaidTracker.toc
+
+- added agnostic name
+
+------------------------------------------------------------------------
+r497 | celess22 | 2019-11-26 18:00:21 +0000 (Tue, 26 Nov 2019) | 2 lines
+Changed paths:
+   M /trunk/RaidTracker.lua
+   M /trunk/RaidTracker.toc
+
+
+
+------------------------------------------------------------------------
+

@@ -1,0 +1,182 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="UI_Dialog.lua" />
+	<Frame name="RT_ConfirmDeleteFrame" inherits="RT_DialogTemplate" parent="RaidTrackerFrame">
+		<Frames>
+			<Button inherits="RT_DeleteButtonTemplate" />
+			<Button inherits="RT_CancelButtonTemplate" />
+		</Frames>
+		<Scripts>
+			<OnEvent>
+				if event == "OnDelete" then
+				RT_Dialog:Delete_OnSave(self)
+				end
+			</OnEvent>
+			<OnShow>
+				RT_Dialog:Edit_OnShow(self)
+			</OnShow>
+		</Scripts>
+	</Frame>
+	<Frame name="RT_AcceptWipeFrame" inherits="RT_DialogTemplate">
+		<Frames>
+			<Button parentKey="_cbNo" inherits="RT_ButtonTemplate" text="No" />
+			<Button parentKey="_cbYes" inherits="RT_ButtonTemplate" text="Yes">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent._cbNo" relativePoint="LEFT" />
+				</Anchors>
+			</Button>
+			<Button parentKey="_cbMaybe" inherits="RT_ButtonTemplate" text="Maybe">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent._cbNo" relativePoint="RIGHT" />
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnEvent>
+				if option == "OnYes" then
+				RT_Dialog:Edit_OnSave(self)
+				elseif option == "OnNo" then
+				RT_Dialog:Edit_OnSave(self, "no")
+				elseif option == "OnMaybe" then
+				RT_Dialog:Edit_OnSave(self, "maybe")
+				end
+			</OnEvent>
+			<OnShow>
+				RT_Dialog:Edit_OnShow(self)
+			</OnShow>
+		</Scripts>
+	</Frame>
+	<Frame name="RT_EditNoteFrame" inherits="RT_DialogEditTemplate" parent="RaidTrackerFrame">
+		<Frames>
+			<EditBox inherits="RT_EditBoxTemplate" />
+			<Button inherits="RT_SaveButtonTemplate" />
+			<Button inherits="RT_CancelButtonTemplate" />
+		</Frames>
+		<Scripts>
+			<OnEvent>
+				if event == "OnSave" then
+				RT_Dialog:Edit_OnSave(self)
+				end
+			</OnEvent>
+			<OnShow>
+				RT_Dialog:Edit_OnShow(self)
+			</OnShow>
+		</Scripts>
+	</Frame>
+	<Frame name="RT_ExportFrame" inherits="RT_DialogEditTemplate" parent="RaidTrackerFrame">
+		<Frames>
+			<EditBox inherits="RT_EditBoxTemplate" letters="99999999" />
+			<Button inherits="RT_DoneButtonTemplate" />
+		</Frames>
+		<Scripts>
+			<OnShow>
+				RT_Dialog:Edit_OnShow(self)
+			</OnShow>
+		</Scripts>
+	</Frame>
+	<Frame name="RT_EditBossFrame" inherits="RT_DialogEditTemplate">
+		<Frames>
+			<Button name="$parentMenu" parentKey="rcmenu" inherits="RT_MenuTemplate">
+				<Scripts>
+					<OnLoad>
+						UIDropDownMenu_Initialize(self, RT_EditBossFrame_Menu_Initialize)
+					</OnLoad>
+				</Scripts>
+			</Button>
+			<Button inherits="RT_SaveButtonTemplate" />
+			<Button inherits="RT_CancelButtonTemplate" />
+		</Frames>
+		<Scripts>
+			<OnEvent>
+				if event == "OnSave" then
+				RT_Dialog:Edit_OnSave(self)
+				end
+			</OnEvent>
+			<OnShow>
+				RT_Dialog:Edit_OnShow(self)
+			</OnShow>
+		</Scripts>
+	</Frame>
+	<Frame name="RT_EditCostFrame" inherits="RT_DialogEditTemplate">
+		<Frames>
+			<EditBox inherits="RT_EditBoxTemplate" />
+			<Button inherits="RT_SaveButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" x="-120" y="17" />
+				</Anchors>
+			</Button>
+			<Button parentKey="_cbBank" inherits="RT_ButtonTemplate" text="Bank">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent._cbSave" relativePoint="RIGHT" />
+				</Anchors>
+			</Button>
+			<Button parentKey="_cbDisenchant" inherits="RT_ButtonTemplate" text="Disenchant">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent._cbBank" relativePoint="RIGHT" />
+				</Anchors>
+			</Button>
+			<Button inherits="RT_CancelButtonTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent._cbDisenchant" relativePoint="RIGHT" />
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnEvent>
+				if event == "OnSave" then
+				RT_Dialog:Edit_OnSave(self)
+				elseif event == "OnBank" then
+				RT_Dialog:Edit_OnSave(self, "bank")
+				elseif event == "OnDisenchant" then
+				RT_Dialog:Edit_OnSave(self, "disenchanted")
+				end
+			</OnEvent>
+			<OnShow>
+				RT_Dialog:Edit_OnShow(self)
+			</OnShow>
+		</Scripts>
+	</Frame>
+	<Frame name="RT_JoinLeaveFrame" inherits="RT_DialogEditTemplate">
+		<Size x="400" y="200" />
+		<Frames>
+			<EditBox parentKey="_ceName" inherits="RT_EditBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-30" y="-50" />
+				</Anchors>
+			</EditBox>
+			<EditBox parentKey="_ceNote" inherits="RT_EditBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent._ceName" relativePoint="BOTTOMLEFT" />
+				</Anchors>
+			</EditBox>
+			<EditBox parentKey="_ceTime" inherits="RT_EditBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent._ceNote" relativePoint="BOTTOMLEFT" />
+				</Anchors>
+			</EditBox>
+			<Button inherits="RT_SaveButtonTemplate" />
+			<Button inherits="RT_CancelButtonTemplate" />
+		</Frames>
+		<Scripts>
+			<OnEvent>
+				if event == "OnSave" then
+				RT_Dialog:Edit_OnSave(self)
+				end
+			</OnEvent>
+			<OnShow>
+				local rt = RaidTracker
+				local L,s = rt.L
+
+				RT_Dialog:Edit_OnShow(self)
+
+				s = self._ceName._csLable; s:SetText(L["Name"]..":"); s:Show()
+				s = self._ceNote._csLable; s:SetText(L["Note"]..":"); s:Show()
+				s = self._ceTime._csLable; s:SetText(L["Time"]..":"); s:Show()
+
+				s = self._ceTime:GetText()
+				if not s or s == "" then
+					self._ceTime:SetText(rt:GetDisplayDate(rt:GetTimestamp()))
+				end
+			</OnShow>
+		</Scripts>
+	</Frame>
+</Ui>

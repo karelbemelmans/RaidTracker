@@ -1,0 +1,267 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="UI_Button.lua" />
+	<Button name="RT_LineDeleteTemplate" parentKey="_cbDelete" inherits="RT_LineButtonTemplate" virtual="true">
+		<Size x="19" y="16" />
+		<Anchors>
+			<Anchor point="RIGHT" />
+		</Anchors>
+		<KeyValues>
+			<KeyValue key="type" value="delete" />
+			<KeyValue key="hasTooltip" value="true" type="boolean" />
+		</KeyValues>
+		<ButtonText inherits="QuestFont" text="[X]" justifyH="RIGHT" />
+		<NormalFont style="QuestFont" />
+		<HighlightFont style="QuestFontHighlight" />
+	</Button>
+	<Button name="RT_LineNoteTemplate" parentKey="_cbNote" inherits="RT_LineButtonTemplate" virtual="true">
+		<Size x="16" y="16" />
+		<Anchors>
+			<Anchor point="RIGHT" />
+		</Anchors>
+		<KeyValues>
+			<KeyValue key="type" value="note" />
+			<KeyValue key="note" value="" />
+			<KeyValue key="hasTooltip" value="true" type="boolean" />
+		</KeyValues>
+		<NormalTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" />
+		<DisabledTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled" />
+		<HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD" />
+	</Button>
+	<Button name="RT_LineHitTemplate" parentKey="_cbHitArea" inherits="RT_LineButtonTemplate" virtual="true">
+		<Anchors>
+			<Anchor point="TOP" />
+			<Anchor point="LEFT" />
+			<Anchor point="BOTTOM" />
+			<Anchor point="RIGHT" />
+		</Anchors>
+		<KeyValues>
+			<KeyValue key="type" value="hit" />
+			<KeyValue key="hasRc" value="true" type="boolean" />
+		</KeyValues>
+	</Button>
+	<ScrollFrame name="RT_LineFrameTemplate" inherits="FauxScrollFrameTemplate" virtual="true">
+		<Frames>
+			<Frame name="$parentRightClickMenu" parentKey="rcmenu" inherits="UIDropDownMenuTemplate" hidden="true" />
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				ScrollFrame_OnLoad(self)
+				if self.lines then self.listcount = self.listcount or #self.lines end
+				if self.rcmenuhandler then UIDropDownMenu_Initialize(self.rcmenu, _G[self.rcmenuhandler], "MENU") end
+			</OnLoad>
+			<OnVerticalScroll>
+				FauxScrollFrame_OnVerticalScroll(self, offset, self.listheight, _G[self.listhandler])
+			</OnVerticalScroll>
+		</Scripts>
+	</ScrollFrame>
+	<Button name="RT_SessionLineTemplate" inherits="RT_LineEventTemplate" virtual="true">
+		<KeyValues>
+			<KeyValue key="type" value="raid" />
+			<KeyValue key="title" value="Right click for more options" />
+			<KeyValue key="hasTooltip" value="true" type="boolean" />
+		</KeyValues>
+		<ButtonText inherits="RT_FontString" />
+	</Button>
+	<Frame name="RT_PlayersLineTemplate" inherits="RT_LineTemplate" virtual="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString parentKey="_csNumber" inherits="QuestFontLeft">
+					<Size x="20" y="16" />
+					<Anchors>
+						<Anchor point="LEFT" />
+					</Anchors>
+				</FontString>
+				<FontString parentKey="_csName" inherits="QuestFontLeft">
+					<Size x="95" y="16" />
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent._csNumber" relativePoint="RIGHT" x="2" />
+					</Anchors>
+				</FontString>
+				<FontString parentKey="_csJoin" inherits="QuestFontLeft">
+					<Size x="70" y="16" />
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent._csName" relativePoint="RIGHT" />
+					</Anchors>
+				</FontString>
+				<FontString parentKey="_csLeave" inherits="QuestFontLeft">
+					<Size x="70" y="16" />
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent._csJoin" relativePoint="RIGHT" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button inherits="RT_LineDeleteTemplate" />
+			<Button inherits="RT_LineNoteTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent._cbDelete" relativePoint="LEFT" />
+				</Anchors>
+			</Button>
+			<Button inherits="RT_LineHitTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent._cbNote" relativePoint="LEFT" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="title" value="Right click for more options" />
+					<KeyValue key="hasTooltip" value="true" type="boolean" />
+				</KeyValues>
+			</Button>
+		</Frames>
+	</Frame>
+	<Frame name="RT_ItemsLineTemplate" inherits="RT_LineTemplate" virtual="true">
+		<Size y="41" />
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="_ctIcon">
+					<Size x="37" y="37" />
+					<Anchors>
+						<Anchor point="LEFT" />
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString parentKey="_csDescription" inherits="QuestFontLeft" justifyV="TOP">
+					<Size x="215" y="27" />
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent._ctIcon" relativePoint="TOPRIGHT" x="5" y="-1" />
+					</Anchors>
+				</FontString>
+				<FontString parentKey="_csLooted" inherits="GameFontBlackSmall" justifyV="TOP" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent._csDescription" relativePoint="BOTTOMLEFT" />
+						<Anchor point="RIGHT" relativeKey="$parent._csDescription" />
+						<Anchor point="BOTTOM" />
+					</Anchors>
+				</FontString>
+				<FontString parentKey="_csCount" inherits="NumberFontNormal" justifyH="RIGHT">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent._ctIcon" x="-3" y="2" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button inherits="RT_LineNoteTemplate">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-1" y="-5" />
+				</Anchors>
+			</Button>
+			<Button inherits="RT_LineDeleteTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent._cbNote" relativePoint="BOTTOM" />
+				</Anchors>
+			</Button>
+			<Button parentKey="_cbIconHitArea" inherits="RT_LineHitTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent._ctIcon" relativePoint="RIGHT" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="type" value="editio" />
+					<KeyValue key="hasItem" value="true" type="boolean" />
+				</KeyValues>
+				<Scripts>
+					<OnUpdate>
+						RT_Button:OnUpdate(self)
+					</OnUpdate>
+				</Scripts>
+			</Button>
+			<Button inherits="RT_LineHitTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent._cbIconHitArea" relativePoint="RIGHT" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="title" value="Right click for more options" />
+					<KeyValue key="hasTooltip" value="true" type="boolean" />
+				</KeyValues>
+			</Button>
+		</Frames>
+	</Frame>
+	<Frame name="RT_RaidsLineTemplate" inherits="RT_LineTemplate" virtual="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString parentKey="_csNumber" inherits="QuestFontLeft">
+					<Size x="30" y="16" />
+					<Anchors>
+						<Anchor point="LEFT" />
+					</Anchors>
+				</FontString>
+				<FontString parentKey="_csName" inherits="QuestFontLeft">
+					<Size x="130" y="16" />
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent._csNumber" relativePoint="RIGHT" />
+					</Anchors>
+				</FontString>
+				<FontString parentKey="_csNote" inherits="QuestFontLeft">
+					<Size x="135" y="16" />
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent._csName" relativePoint="RIGHT" />
+					</Anchors>
+				</FontString>
+				<Texture parentKey="mouseover_player" inherits="RT_LineHighlight">
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent._csNote" />
+						<Anchor point="RIGHT" relativeKey="$parent._csNote" />
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button inherits="RT_LineDeleteTemplate" />
+			<Button inherits="RT_LineNoteTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent._cbDelete" relativePoint="LEFT" />
+				</Anchors>
+			</Button>
+			<Button parentKey="_cbHitAreaRight" inherits="RT_LineHitTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent._csNote" />
+					<Anchor point="RIGHT" relativeKey="$parent._csNote" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="type" value="player" />
+				</KeyValues>
+			</Button>
+			<Button inherits="RT_LineHitTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent._cbHitAreaRight" relativePoint="LEFT" />
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+	<Frame name="RT_EventsLineTemplate" inherits="RT_LineTemplate" virtual="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString parentKey="_csBoss" inherits="QuestFontLeft">
+					<Size x="160" y="16" />
+					<Anchors>
+						<Anchor point="LEFT" />
+					</Anchors>
+				</FontString>
+				<FontString parentKey="_csTime" inherits="QuestFontLeft">
+					<Size x="90" y="16" />
+					<Anchors>
+						<Anchor relativekey="$parent._csBoss" point="LEFT" relativePoint="RIGHT" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button inherits="RT_LineDeleteTemplate" />
+			<Button inherits="RT_LineNoteTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent._cbDelete" relativePoint="LEFT" />
+				</Anchors>
+			</Button>
+			<Button inherits="RT_LineHitTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent._cbNote" relativePoint="LEFT" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="title" value="Right click for more options" />
+					<KeyValue key="hasTooltip" value="true" type="boolean" />
+				</KeyValues>
+			</Button>
+		</Frames>
+	</Frame>
+</Ui>

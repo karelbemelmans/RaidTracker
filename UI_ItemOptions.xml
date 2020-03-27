@@ -1,0 +1,226 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="UI_ItemOptions.lua" />
+	<Button name="RT_IO_LineTemplate" inherits="RT_LineEventTemplate" virtual="true">
+		<Size y="16" />
+		<Anchors>
+			<Anchor point="LEFT" x="2" />
+			<Anchor point="RIGHT" />
+		</Anchors>
+		<KeyValues>
+			<KeyValue key="type" value="io" />
+			<KeyValue key="hasItem" value="true" type="boolean" />
+		</KeyValues>
+		<Scripts>
+			<OnUpdate>
+				RT_Button:OnUpdate(self)
+			</OnUpdate>
+			<OnClick>
+				if RT_Button:OnClick(self,button) then return end
+				if button == "RightButton" then return end
+				KARaidTrackerDB.Options.ItemOptionsSelected = self.id
+				RT_ItemOptions:Update()
+			</OnClick>
+		</Scripts>
+		<ButtonText inherits="RT_FontStringSmall" />
+		<HighlightFont style="GameFontNormal" />
+	</Button>
+	<Frame name="RT_ItemOptionsFrame" inherits="RT_PanelTemplate">
+		<Size x="471" y="392" />
+		<Frames>
+			<Frame parentKey="_cfList" inherits="RT_PanelSectionTemplate">
+				<Size x="245" y="349" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="13" y="-30" />
+				</Anchors>
+				<Frames>
+					<ScrollFrame name="RT_IO_MainFrameItems" parentKey="_csfItems" inherits="RT_LineFrameTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="5" y="-5" />
+							<Anchor point="BOTTOMRIGHT" x="-27" y="5" />
+						</Anchors>
+						<KeyValues>
+							<KeyValue key="listheight" value="16" type="number" />
+							<KeyValue key="listhandler" value="RT_ItemOptionsItems_ScrollUpdate" />
+						</KeyValues>
+						<Frames>
+							<Button parentKey="line1" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line2" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line1" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line3" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line2" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line4" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line3" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line5" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line4" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line6" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line5" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line7" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line8" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line7" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line9" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line8" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line10" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line9" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line11" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line10" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line12" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line11" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line13" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line12" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line14" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line13" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line15" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line14" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line16" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line15" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line17" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line16" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line18" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line17" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line19" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line18" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line20" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line19" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+							<Button parentKey="line21" inherits="RT_IO_LineTemplate">
+								<Anchors>
+									<Anchor point="TOP" relativeKey="$parent.line20" relativePoint="BOTTOM" />
+								</Anchors>
+							</Button>
+						</Frames>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+			<Frame parentKey="_cfEdit" inherits="RT_PanelSectionTemplate" hidden="true">
+				<Size x="200" y="349" />
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-13" y="-30" />
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="_csTitle" inherits="GameFontNormal" justifyV="TOP">
+							<Size x="190" y="28" />
+							<Anchors>
+								<Anchor point="TOP" y="-8" />
+							</Anchors>
+						</FontString>
+						<FontString parentKey="_csLinkID" inherits="GameFontNormalSmall" justifyH="LEFT">
+							<Size x="130" y="16" />
+							<Anchors>
+								<Anchor point="TOPLEFT" x="13" y="-132" />
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Slider parentKey="Log" inherits="RT_SliderSmallTemplate" minValue="0" maxValue="2" valueStep="1">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent._csTitle" relativePoint="BOTTOM" x="5" y="-5" />
+						</Anchors>
+					</Slider>
+					<Slider parentKey="Stack" inherits="RT_SliderSmallTemplate" minValue="0" maxValue="2" valueStep="1">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.Log" relativePoint="BOTTOM" />
+						</Anchors>
+					</Slider>
+					<Slider parentKey="CostGet" inherits="RT_SliderSmallTemplate" minValue="0" maxValue="2" valueStep="1">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.Stack" relativePoint="BOTTOM" />
+						</Anchors>
+					</Slider>
+					<Slider parentKey="CostAsk" inherits="RT_SliderSmallTemplate" minValue="0" maxValue="2" valueStep="1">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.CostGet" relativePoint="BOTTOM" />
+						</Anchors>
+					</Slider>
+					<Button inherits="RT_SaveButtonTemplate">
+						<Anchors>
+							<Anchor point="BOTTOM" x="-45" y="12" />
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								RT_ItemOptions:Edit_Save(self:GetParent())
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button inherits="RT_DeleteButtonTemplate">
+						<Anchors>
+							<Anchor point="BOTTOM" x="45" y="12" />
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								RT_ItemOptions:Delete(self:GetParent())
+							</OnClick>
+						</Scripts>
+					</Button>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnShow>
+				RT_ItemOptions:OnShow(self)
+			</OnShow>
+		</Scripts>
+	</Frame>
+</Ui>

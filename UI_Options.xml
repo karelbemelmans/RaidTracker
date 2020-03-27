@@ -1,0 +1,145 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="UI_Options.lua" />
+	<Frame name="RT_OptionsFrame" inherits="RT_PanelTemplate" frameStrata="DIALOG">
+		<Size x="394" y="555" />
+		<Frames>
+			<Frame parentKey="_Section1" inherits="RT_SectionTemplate">
+				<Anchors>
+					<Anchor point="TOP" y="-22" />
+				</Anchors>
+			</Frame>
+			<Slider parentKey="AutoRaid" inherits="RT_SliderTemplate" minValue="0" maxValue="4" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent._Section1" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="AutoParty" inherits="RT_SliderTemplate" minValue="0" maxValue="4" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.AutoRaid" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="AutoSolo" inherits="RT_SliderTemplate" minValue="0" maxValue="4" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.AutoParty" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="AutoBattlegroup" inherits="RT_SliderTemplate" minValue="0" maxValue="3" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.AutoSolo" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="AutoArena" inherits="RT_SliderTemplate" minValue="0" maxValue="3" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.AutoBattlegroup" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="LogAttendees" inherits="RT_SliderTemplate" minValue="0" maxValue="8" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.AutoArena" relativePoint="BOTTOM" y="-8" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="LogGuild" inherits="RT_SliderTemplate" minValue="0" maxValue="3" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.LogAttendees" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="LogWipe" inherits="RT_SliderTemplate" minValue="0" maxValue="10" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.LogGuild" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="LogSnapshot" inherits="RT_SliderTemplate" minValue="0" maxValue="3" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.LogWipe" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Frame parentKey="_Section2" inherits="RT_SectionTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.LogSnapshot" relativePoint="BOTTOM" />
+				</Anchors>
+			</Frame>
+			<Slider parentKey="LogRarity" inherits="RT_SliderTemplate" minValue="0" maxValue="7" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent._Section2" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="LogILevel" inherits="RT_SliderTemplate" minValue="0" maxValue="900" valueStep="5">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.LogRarity" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="CostGet" inherits="RT_SliderTemplate" minValue="0" maxValue="7" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.LogILevel" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="CostAsk" inherits="RT_SliderTemplate" minValue="0" maxValue="7" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.CostGet" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="StackItems" inherits="RT_SliderTemplate" minValue="0" maxValue="7" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.CostAsk" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Frame parentKey="_Section3" inherits="RT_SectionTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.StackItems" relativePoint="BOTTOM" />
+				</Anchors>
+			</Frame>
+			<Slider parentKey="ShowTooltips" inherits="RT_SliderTemplate" minValue="0" maxValue="1" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent._Section3" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="AutoEvent" inherits="RT_SliderTemplate" minValue="0" maxValue="3" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.ShowTooltips" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="EventCooldown" inherits="RT_SliderTemplate" minValue="0" maxValue="600" valueStep="10">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.AutoEvent" relativePoint="BOTTOMLEFT" />
+				</Anchors>
+			</Slider>
+			<Slider parentKey="LevelMax" inherits="RT_SliderTemplate" minValue="1" maxValue="100" valueStep="1">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.EventCooldown" relativePoint="BOTTOM" />
+				</Anchors>
+			</Slider>
+			<CheckButton parentKey="AutoZone" inherits="RT_CheckBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.LevelMax" relativePoint="BOTTOMLEFT" />
+				</Anchors>
+			</CheckButton>
+			<CheckButton parentKey="DebugMode" inherits="RT_CheckBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.AutoZone" relativePoint="TOPRIGHT" x="98" />
+				</Anchors>
+			</CheckButton>
+			<CheckButton parentKey="ExportStrict" inherits="RT_CheckBoxTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.AutoZone" relativePoint="BOTTOMLEFT" />
+				</Anchors>
+			</CheckButton>
+			<Slider parentKey="ExportFormat" inherits="RT_SliderTemplate" minValue="0" maxValue="13" valueStep="1">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.ExportStrict" relativePoint="BOTTOMLEFT" />
+				</Anchors>
+			</Slider>
+			<Button inherits="RT_SaveButtonTemplate" />
+			<Button inherits="RT_CancelButtonTemplate" />
+		</Frames>
+		<Scripts>
+			<OnEvent>
+				if event == "OnSave" then
+				RT_Options:OnSave(self)
+				end
+			</OnEvent>
+			<OnShow>
+				RT_Options:OnShow(self)
+			</OnShow>
+		</Scripts>
+	</Frame>
+</Ui>

@@ -1,0 +1,785 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="RaidTracker.lua" />
+	<ScrollFrame name="RT_MainFrameTemplate" inherits="RT_LineFrameTemplate" virtual="true">
+		<Size x="301" y="336" />
+		<Anchors>
+			<Anchor point="TOPLEFT" x="19" y="-74" />
+		</Anchors>
+	</ScrollFrame>
+	<ScrollFrame name="RT_DetailFrameTemplate" inherits="RT_LineFrameTemplate" virtual="true" hidden="true">
+		<Size x="301" y="336" />
+		<Anchors>
+			<Anchor point="TOPRIGHT" x="-32" y="-74" />
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString parentKey="_csText" inherits="QuestTitleFont" text="" justifyV="TOP" justifyH="LEFT">
+					<Size x="285" y="44" />
+					<Anchors>
+						<Anchor point="TOPLEFT" x="5" y="-5" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</ScrollFrame>
+	<Button name="RT_DetailTab" inherits="RT_TabTemplate" virtual="true">
+		<Scripts>
+			<OnClick>
+				RaidTracker:SortToggle(self)
+			</OnClick>
+		</Scripts>
+	</Button>
+	<Frame name="RaidTrackerFrame" hidden="true" parent="UIParent" toplevel="true" movable="true" enableMouse="true">
+		<Size x="682" y="433" />
+		<Anchors>
+			<Anchor point="TOPLEFT" x="96" y="-53" />
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="_ctIcon" file="Interface\QuestFrame\UI-QuestLog-BookIcon">
+					<Size x="60" y="60" />
+					<Anchors>
+						<Anchor point="TOPLEFT" x="7" y="-6" />
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER" textureSubLevel="-1">
+				<Texture parentKey="_ctExpand" file="Interface\QuestFrame\UI-QuestLogDualPane-Left">
+					<Size x="512" y="445" />
+					<Anchors>
+						<Anchor point="TOPLEFT" />
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="0.8691406" />
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="_ctCollapseL" hidden="true" file="Interface\QuestFrame\UI-QuestLogDualPane-Left">
+					<Size x="20" y="445" />
+					<Anchors>
+						<Anchor point="TOPLEFT" />
+					</Anchors>
+					<TexCoords left="0" right="0.0390625" top="0" bottom="0.8691406" />
+				</Texture>
+				<Texture parentKey="_ctCollapseT" hidden="true" file="Interface\QuestFrame\UI-QuestLogDualPane-Left">
+					<Size x="162" y="74" />
+					<Anchors>
+						<Anchor point="TOPLEFT" x="20" />
+					</Anchors>
+					<TexCoords left="0.0390625" right="0.35546875" top="0" bottom="0.14453125" />
+				</Texture>
+				<Texture parentKey="_ctCollapse" hidden="true" file="Interface\QuestFrame\UI-QuestLogDualPane-Left">
+					<Size x="162" y="339" />
+					<Anchors>
+						<Anchor point="TOPLEFT" x="20" y="-73" />
+					</Anchors>
+					<TexCoords left="0.68359375" right="1" top="0.142578125" bottom="0.8046875" />
+				</Texture>
+				<Texture parentKey="_ctCollapseB" hidden="true" file="Interface\QuestFrame\UI-QuestLogDualPane-Left">
+					<Size x="162" y="35" />
+					<Anchors>
+						<Anchor realtiveKey="_ctCollapse2" point="TOPLEFT" x="20" y="-410" />
+					</Anchors>
+					<TexCoords left="0.0390625" right="0.35546875" top="0.80078125" bottom="0.8691406" />
+				</Texture>
+				<Texture file="Interface\QuestFrame\UI-QuestLogDualPane-RIGHT">
+					<Size x="170" y="445" />
+					<Anchors>
+						<Anchor point="TOPRIGHT" />
+					</Anchors>
+					<TexCoords left="0" right="0.6640625" top="0" bottom="0.8691406" />
+				</Texture>
+			</Layer>
+			<Layer>
+				<FontString parentKey="_csTitle" inherits="GameFontHighlight" text="Header Title">
+					<Size x="314" y="14" />
+					<Anchors>
+						<Anchor point="RIGHT" x="-33" />
+						<Anchor point="TOPLEFT" x="72" y="-17" />
+					</Anchors>
+				</FontString>
+				<FontString parentKey="_csVersion" inherits="GameFontNormalSmall" text="v1.2.3" justifyH="RIGHT">
+					<Size x="70" y="14" />
+					<Anchors>
+						<Anchor point="RIGHT" relativeKey="$parent._csTitle" y="-1" />
+					</Anchors>
+					<Color a="0.8" r="0.46" g="0.87" b="1" />
+				</FontString>
+				<FontString parentKey="_csTime" inherits="GameFontNormalSmall" text="0:00:00" justifyH="LEFT">
+					<Size x="68" y="20" />
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent._csTitle" x="3" y="-1" />
+					</Anchors>
+					<Color a="0.72" r="0.71" g="0.76" b="0.77" />
+				</FontString>
+				<FontString parentKey="_csText" inherits="GameFontHighlightSmall" text="" justifyH="LEFT">
+					<Size x="588" y="14" />
+					<Anchors>
+						<Anchor point="RIGHT" x="-7" />
+						<Anchor point="TOPLEFT" relativeKey="$parent._csTitle" relativePoint="BOTTOMLEFT" y="-7" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="2" y="-8" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						RaidTracker:OnCommand("open")
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button parentKey="_cbNew" inherits="UIPanelButtonTemplate" text="New">
+				<Size x="63" y="20" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="70" y="-52" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						RaidTracker:CreateSessionDB()
+						RaidTracker:FrameUpdate()
+						RaidTracker:FrameUpdateView()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button parentKey="_cbEnd" inherits="UIPanelButtonTemplate" text="End">
+				<Size x="63" y="20" />
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent._cbNew" relativePoint="RIGHT" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						RaidTracker:EndSessionDB()
+						RaidTracker:FrameUpdate()
+						RaidTracker:FrameUpdateView()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button parentKey="_cbSshot" inherits="UIPanelButtonTemplate" text="Snapshot">
+				<Size x="75" y="20" />
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent._cbEnd" relativePoint="RIGHT" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						RaidTracker:SnapshotSessionDB()
+						RaidTracker:FrameUpdate()
+						RaidTracker:FrameUpdateView()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button parentKey="_cbDelete" inherits="UIPanelButtonTemplate" text="Delete">
+				<Size x="73" y="20" />
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent._cbSshot" relativePoint="RIGHT" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						RT_Dialog:Show("RT_ConfirmDeleteFrame", "delete", "raid", RaidTrackerFrame.selected)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button parentKey="_cbView2" inherits="UIPanelButtonTemplate" text="View Events">
+				<Size x="130" y="21" />
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="17" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						RaidTracker:GetPage()
+						local parent = self:GetParent()
+						parent.type = (parent.type == "events") and "players" or "events"
+						RaidTracker:FrameUpdateView()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button parentKey="_cbView" inherits="UIPanelButtonTemplate" text="View Items">
+				<Size x="146" y="21" />
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent._cbView2" relativePoint="RIGHT" x="-3" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						local rt = RaidTracker
+						local L = rt.L
+						rt:GetPage()
+						local parent = self:GetParent()
+						if parent.type == "players" or parent.type == "events" or not parent.type then
+						parent.type = "items"
+						self:SetText(L["View Players"])
+						elseif parent.type == "items" then
+						parent.type = "players"
+						self:SetText(L["View Items"])
+						elseif parent.type == "playerraids" then
+						parent.type = "playeritems"
+						self:SetText(L["View Raids"])
+						elseif parent.type == "playeritems" then
+						parent.type = "playerraids"
+						self:SetText(L["View Loot"])
+						end
+						rt:FrameUpdateView()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button parentKey="_cbBack" inherits="UIPanelButtonTemplate" text="_BACK">
+				<Size x="62" y="21" />
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent._cbView" relativePoint="RIGHT" x="-3" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						RaidTracker:GoBack()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button parentKey="_cbCollapse" inherits="UIPanelButtonTemplate" text="Collapse">
+				<Size x="80" y="21" />
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-8" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						local rt,parent = RaidTracker,self:GetParent()
+						local o = rt._options
+
+						o.Collapsed = o.Collapsed == 1 and 0 or 1
+
+						rt:FrameUpdate()
+						rt:FrameUpdateView()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<ScrollFrame name="RT_MainFrameSessions" parentKey="_csfSessions" inherits="RT_MainFrameTemplate">
+				<KeyValues>
+					<KeyValue key="rcmenuhandler" value="RT_RaidItemTemplate_RightClickMenu_Initialize" />
+					<KeyValue key="listheight" value="15" type="number" />
+					<KeyValue key="listhandler" value="RT_MainFrameSessions_ScrollUpdate" />
+				</KeyValues>
+				<Frames>
+					<Button parentKey="line1" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" y="-2" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line2" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line1" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line3" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line2" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line4" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line3" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line5" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line4" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line6" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line5" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line7" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line8" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line7" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line9" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line8" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line10" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line9" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line11" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line10" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line12" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line11" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line13" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line12" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line14" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line13" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line15" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line14" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line16" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line15" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line17" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line16" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line18" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line17" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line19" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line18" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line20" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line19" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line21" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line20" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line22" inherits="RT_SessionLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line21" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+				</Frames>
+			</ScrollFrame>
+			<ScrollFrame name="RT_DetailFramePlayers" parentKey="_csfPlayers" inherits="RT_DetailFrameTemplate">
+				<KeyValues>
+					<KeyValue key="rcmenuhandler" value="RT_PlayersLineTemplate_RightClickMenu_Initialize" />
+					<KeyValue key="listcount" value="15" type="number" />
+					<KeyValue key="listheight" value="18" type="number" />
+					<KeyValue key="listhandler" value="RT_DetailFramePlayers_ScrollUpdate" />
+				</KeyValues>
+				<Frames>
+					<Button parentKey="_cbTab1" inherits="RT_DetailTab" id="1" text="Player name">
+						<Size x="120" y="22" />
+						<Anchors>
+							<Anchor point="TOPLEFT" y="-26" />
+						</Anchors>
+					</Button>
+					<Button parentKey="_cbTab2" inherits="RT_DetailTab" id="2" text="First join">
+						<Size x="70" y="22" />
+						<Anchors>
+							<Anchor point="LEFT" relativeKey="$parent._cbTab1" relativePoint="RIGHT" />
+						</Anchors>
+					</Button>
+					<Button parentKey="_cbTab3" inherits="RT_DetailTab" id="3" text="Last leave">
+						<Size x="70" y="22" />
+						<Anchors>
+							<Anchor point="LEFT" relativeKey="$parent._cbTab2" relativePoint="RIGHT" />
+						</Anchors>
+					</Button>
+					<Frame parentKey="line1" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent._csText" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line2" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line1" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line3" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line2" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line4" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line3" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line5" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line4" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line6" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line5" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line7" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line8" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line7" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line9" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line8" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line10" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line9" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line11" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line10" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line12" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line11" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line13" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line12" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line14" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line13" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line15" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line14" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line16" inherits="RT_PlayersLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line15" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+				</Frames>
+			</ScrollFrame>
+			<ScrollFrame name="RT_DetailFrameItems" parentKey="_csfItems" inherits="RT_DetailFrameTemplate">
+				<KeyValues>
+					<KeyValue key="rcmenuhandler" value="RT_ItemsLineTemplate_RightClickMenu_Initialize" />
+					<KeyValue key="listheight" value="41" type="number" />
+					<KeyValue key="listhandler" value="RT_DetailFrameItems_ScrollUpdate" />
+				</KeyValues>
+				<Frames>
+					<Frame name="$parentRarity" parentKey="_cfRarity" inherits="UIDropDownMenuTemplate">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="16" y="1" />
+						</Anchors>
+					</Frame>
+					<Button parentKey="_cbTab1" inherits="RT_DetailTab" id="1" text="Item name">
+						<Size x="73" y="22" />
+						<Anchors>
+							<Anchor point="TOPLEFT" y="-26" />
+						</Anchors>
+					</Button>
+					<Button parentKey="_cbTab2" inherits="RT_DetailTab" id="2" text="Time looted">
+						<Size x="82" y="22" />
+						<Anchors>
+							<Anchor point="LEFT" relativeKey="$parent._cbTab1" relativePoint="RIGHT" />
+						</Anchors>
+					</Button>
+					<Button parentKey="_cbTab3" inherits="RT_DetailTab" id="3" text="Looter">
+						<Size x="73" y="22" />
+						<Anchors>
+							<Anchor point="LEFT" relativeKey="$parent._cbTab2" relativePoint="RIGHT" />
+						</Anchors>
+					</Button>
+					<Button parentKey="_cbTab4" inherits="RT_DetailTab" id="4" text="Rarity">
+						<Size x="74" y="22" />
+						<Anchors>
+							<Anchor point="LEFT" relativeKey="$parent._cbTab3" relativePoint="RIGHT" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line1" inherits="RT_ItemsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent._csText" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line2" inherits="RT_ItemsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line1" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line3" inherits="RT_ItemsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line2" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line4" inherits="RT_ItemsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line3" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line5" inherits="RT_ItemsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line4" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line6" inherits="RT_ItemsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line5" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+					<Button parentKey="line7" inherits="RT_ItemsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" />
+						</Anchors>
+					</Button>
+				</Frames>
+			</ScrollFrame>
+			<ScrollFrame name="RT_DetailFrameRaids" parentKey="_csfRaids" inherits="RT_DetailFrameTemplate">
+				<KeyValues>
+					<KeyValue key="rcmenuhandler" type="nil" />
+					<KeyValue key="listcount" value="15" type="number" />
+					<KeyValue key="listheight" value="18" type="number" />
+					<KeyValue key="listhandler" value="RT_DetailFrameRaids_ScrollUpdate" />
+				</KeyValues>
+				<Frames>
+					<Button parentKey="_cbTab1" inherits="RT_DetailTab" id="1" text="Raid date">
+						<Size x="163" y="22" />
+						<Anchors>
+							<Anchor point="TOPLEFT" y="-26" />
+						</Anchors>
+					</Button>
+					<Button parentKey="_cbTabLooter" inherits="RT_DetailTab" hidden="true" id="2" text="Looter">
+						<Anchors>
+							<Anchor point="RIGHT" />
+							<Anchor point="LEFT" relativeKey="$parent._cbTab1" relativePoint="RIGHT" />
+						</Anchors>
+					</Button>
+					<Frame parentKey="line1" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent._csText" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line2" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line1" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line3" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line2" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line4" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line3" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line5" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line4" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line6" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line5" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line7" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line8" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line7" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line9" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line8" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line10" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line9" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line11" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line10" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line12" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line11" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line13" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line12" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line14" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line13" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line15" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line14" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line16" inherits="RT_RaidsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line15" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+				</Frames>
+			</ScrollFrame>
+			<ScrollFrame name="RT_DetailFrameEvents" parentKey="_csfEvents" inherits="RT_DetailFrameTemplate">
+				<KeyValues>
+					<KeyValue key="rcmenuhandler" value="RT_EventsLineTemplate_RightClickMenu_Initialize" />
+					<KeyValue key="listheight" value="18" type="number" />
+					<KeyValue key="listhandler" value="RT_DetailFrameEvents_ScrollUpdate" />
+				</KeyValues>
+				<Frames>
+					<Button parentKey="_cbTab1" inherits="RT_DetailTab" id="1" text="Boss">
+						<Size x="163" y="22" />
+						<Anchors>
+							<Anchor point="TOPLEFT" y="-26" />
+						</Anchors>
+					</Button>
+					<Button parentKey="_cbTabBoss" inherits="RT_DetailTab" hidden="true" id="2" text="Kill date">
+						<Size x="93" y="22" />
+						<Anchors>
+							<Anchor point="LEFT" relativeKey="$parent._cbTab1" relativePoint="RIGHT" />
+						</Anchors>
+					</Button>
+					<Frame parentKey="line1" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent._csText" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line2" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line1" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line3" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line2" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line4" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line3" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line5" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line4" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line6" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line5" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line7" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line6" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line8" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line7" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line9" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line8" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line10" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line9" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line11" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line10" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line12" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line11" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line13" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line12" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line14" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line13" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line15" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line14" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+					<Frame parentKey="line16" inherits="RT_EventsLineTemplate">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.line15" relativePoint="BOTTOM" />
+						</Anchors>
+					</Frame>
+				</Frames>
+			</ScrollFrame>
+		</Frames>
+		<Scripts>
+			<OnShow>
+				RaidTracker:FrameUpdate()
+				RaidTracker:FrameUpdateView()
+			</OnShow>
+			<OnHide>
+				self:StopMovingOrSizing()
+				self.isMoving = false
+			</OnHide>
+			<OnDragStart>
+				self:StartMoving()
+				self.isMoving = true
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing()
+				self.isMoving = false
+			</OnDragStop>
+			<OnLoad>
+				self:RegisterForDrag("LeftButton")
+				self.LastPage = { }
+				if RaidTracker then RaidTracker:OnLoad(self) end
+			</OnLoad>
+			<OnEvent>
+				RaidTracker:OnEvent(self, event, ...)
+			</OnEvent>
+		</Scripts>
+	</Frame>
+</Ui>
