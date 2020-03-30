@@ -212,7 +212,7 @@ end
 
 function LibKarmaUtil:GetDate( n, tz, fmt )					-- convert timestamp,[tzoffset],[format], or now to formatted string
 	n = (n or time()) + (tz and (tz * 3600) or 0)
-	return date(fmt or "%m/%d/%y %H:%M:%S", n)
+	return date(fmt or "%d/%m/%y %H:%M:%S", n)
 end
 
 function LibKarmaUtil:GetGameTime( )

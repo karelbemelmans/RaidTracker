@@ -960,8 +960,8 @@ function RaidTracker:GetRaidTitle( raidid, isid, isdate, iszone, color )
 	end
 	if isdate and raid.key then
 		if		isdate=="default" then	isdate = nil
-		elseif	isdate==true then		isdate = "%b %d'%y %H:%M"
-		elseif	isdate=="short" then	isdate = "%m.%d %H:%M" end
+		elseif	isdate==true then		isdate = "%d %b'%y %H:%M"
+		elseif	isdate=="short" then	isdate = "%d-%m-%Y %H:%M" end
 		s = s .. (s=="" and "" or ") ") .. (self:GetDisplayDate(raid.key, isdate) or "")
 	end
 	if iszone and raid.zone then
@@ -1697,7 +1697,7 @@ function RT_DetailFrameEvents_ScrollUpdate()
 			line.mouseover:Hide()
 			line._cbHitArea:Show()
 			line._csBoss:SetText(L[event.boss])
-			line._csTime:SetText(self:GetDisplayDate(event.time,"%m/%d %H:%M"))
+			line._csTime:SetText(self:GetDisplayDate(event.time,"%d/%m/%Y %H:%M"))
 			c = event.note and 1 or 0.5
 			line._cbNote:GetNormalTexture():SetVertexColor(c, c, c)
 			line:Show()
