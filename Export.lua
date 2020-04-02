@@ -440,6 +440,7 @@ function RT_Export:GenerateDiscord( r )										RaidTracker:Debug("RT_Export:Ge
 	s(L["Loot"] .. ":" .. NL)
 	for i,v in pairs(r.Loot) do
 		s("[" .. (v.item.name or "Unknown") .. "] - " .. (v.player or "Unknown"))
+		if (v.item.count or 1) > 1 then s(" (" .. (v.item.count or 1) .. ")") end
 		if v.note then s((NL.."    ") .. (v.note and ("\"" .. v.note .. "\"") or "")) end
 		s(NL)
 	end
